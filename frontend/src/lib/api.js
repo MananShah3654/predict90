@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// Default to same-origin "/api" when REACT_APP_BACKEND_URL isn't set
+// (e.g. on Vercel, where the app and API share one domain).
+const API_BASE = process.env.REACT_APP_BACKEND_URL || "";
+
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
+  baseURL: `${API_BASE}/api`,
   withCredentials: true,
 });
 

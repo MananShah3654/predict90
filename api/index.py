@@ -381,7 +381,7 @@ async def google_auth(data: GoogleAuthInput, response: Response):
         )
     except Exception as e:
         logger.error(f"Google token verification failed: {type(e).__name__}: {e}")
-        raise HTTPException(status_code=401, detail=f"Google verify failed: {type(e).__name__}: {e}")
+        raise HTTPException(status_code=401, detail="Could not verify Google sign-in. Please try again.")
 
     email = (info.get("email") or "").lower()
     if not email or not info.get("email_verified", True):
