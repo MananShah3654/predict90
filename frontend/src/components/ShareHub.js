@@ -4,49 +4,60 @@ import { Download, Copy, Share2, Trophy, Crown, Target, Flame, Square, Smartphon
 import { toast } from "sonner";
 import html2canvas from "html2canvas";
 import { useAuth } from "@/context/AuthContext";
-import WCLogo from "@/components/WCLogo";
 
-const STADIUM_BG = "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1400&auto=format&fit=crop";
+const STADIUM_BG = "https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1400&auto=format&fit=crop";
 const ORIGIN = typeof window !== "undefined" ? window.location.origin : "";
 
 /* ---------- decorative bits ---------- */
 
+const CONFETTI = [
+  ["7%", "20%", "#FFD700", 9, 18], ["90%", "16%", "#FFC83D", 8, -25], ["14%", "62%", "#22c55e", 7, 40],
+  ["88%", "66%", "#FFD700", 10, 12], ["50%", "10%", "#fff", 6, 0], ["78%", "40%", "#FFD700", 7, 33],
+  ["20%", "34%", "#fff", 6, 55], ["68%", "78%", "#FFC83D", 8, -15], ["33%", "84%", "#FFD700", 7, 22],
+  ["60%", "30%", "#22c55e", 6, 48], ["10%", "44%", "#FFD700", 6, -30], ["94%", "46%", "#fff", 5, 10],
+];
 const Confetti = () => (
   <>
-    {[
-      ["6%", "8%", "#FFD700", 8], ["88%", "6%", "#22c55e", 7], ["12%", "78%", "#22c55e", 6],
-      ["92%", "82%", "#FFD700", 9], ["50%", "3%", "#fff", 5], ["80%", "40%", "#FFD700", 6],
-      ["18%", "30%", "#fff", 5], ["70%", "70%", "#22c55e", 6],
-    ].map(([l, t, c, s], i) => (
-      <span key={i} className="absolute rounded-sm"
-        style={{ left: l, top: t, width: s, height: s, background: c, opacity: 0.7, transform: `rotate(${i * 33}deg)` }} />
+    {CONFETTI.map(([l, t, c, s, r], i) => (
+      <span key={i} className="absolute" style={{
+        left: l, top: t, width: s, height: s * 1.6, background: c, opacity: 0.85,
+        transform: `rotate(${r}deg)`, borderRadius: 1,
+      }} />
     ))}
   </>
 );
 
-const Flag = ({ team, big }) => (
-  <div className="flex flex-col items-center gap-2" style={{ width: big ? 92 : 76 }}>
-    <img src={team?.flag_url} crossOrigin="anonymous" alt=""
-      className="object-cover rounded-md"
-      style={{ width: big ? 72 : 56, height: big ? 48 : 38, boxShadow: "0 6px 18px rgba(0,0,0,.5)", border: "2px solid rgba(255,255,255,.25)" }} />
-    <span className="font-bold text-center leading-tight" style={{ fontSize: big ? 14 : 12 }}>{team?.name}</span>
+const GoldFlag = ({ team }) => (
+  <div className="flex flex-col items-center" style={{ width: 110 }}>
+    <img src={team?.flag_url} crossOrigin="anonymous" alt="" style={{
+      width: 92, height: 62, objectFit: "cover", borderRadius: 10,
+      border: "3px solid #FFD700", boxShadow: "0 0 22px rgba(255,215,0,0.45), 0 8px 18px rgba(0,0,0,0.5)",
+    }} />
+    <span className="font-display tracking-wide mt-2" style={{ fontSize: 18, color: "#fff", lineHeight: 1.05, textAlign: "center" }}>
+      {team?.name?.toUpperCase()}
+    </span>
   </div>
 );
 
-const ScoreBig = ({ children }) => (
-  <span className="font-display gold-gradient-text whitespace-nowrap"
-    style={{ fontSize: 64, lineHeight: 1, filter: "drop-shadow(0 4px 24px rgba(255,215,0,.45))" }}>{children}</span>
+const Score = ({ children }) => (
+  <span className="font-display" style={{
+    fontSize: 76, lineHeight: 0.9, color: "#fff", letterSpacing: 2,
+    textShadow: "0 4px 24px rgba(255,215,0,0.45)", whiteSpace: "nowrap",
+  }}>{children}</span>
 );
 
 const GoldPill = ({ children }) => (
-  <span className="font-display tracking-wide text-black px-5 py-1.5 rounded-full mt-3 inline-block"
-    style={{ background: "linear-gradient(135deg,#FFF3B0,#FFD700,#D4AF37)", boxShadow: "0 8px 24px rgba(255,215,0,.4)", fontSize: 22 }}>
-    {children}
+  <span className="inline-flex items-center gap-2 mt-4" style={{
+    border: "2px solid #FFD700", borderRadius: 999, padding: "7px 18px",
+    background: "rgba(0,0,0,0.35)", boxShadow: "0 0 18px rgba(255,215,0,0.3)",
+  }}>
+    <Trophy size={18} className="text-[#FFD700]" />
+    <span className="font-display tracking-wide" style={{ fontSize: 20, color: "#fff" }}>{children}</span>
   </span>
 );
 
 const Eyebrow = ({ children }) => (
-  <span className="font-display tracking-[0.3em] text-[#FFD700]" style={{ fontSize: 14 }}>{children}</span>
+  <span className="font-display tracking-[0.25em]" style={{ fontSize: 16 }}>{children}</span>
 );
 
 function Bar({ label, count, total, gold }) {
@@ -65,7 +76,7 @@ function Bar({ label, count, total, gold }) {
 }
 
 const Stat = ({ icon: Icon, label, value }) => (
-  <div className="rounded-2xl py-3 px-1" style={{ background: "rgba(0,0,0,.35)", border: "1px solid rgba(255,255,255,.12)" }}>
+  <div className="rounded-2xl py-3 px-1" style={{ background: "rgba(0,0,0,.4)", border: "1px solid rgba(255,215,0,.25)" }}>
     <Icon size={16} className="text-[#FFD700] mx-auto" />
     <p className="font-display text-3xl mt-1 leading-none">{value}</p>
     <p className="text-[10px] uppercase tracking-wider text-white/45 mt-1">{label}</p>
@@ -73,7 +84,7 @@ const Stat = ({ icon: Icon, label, value }) => (
 );
 
 const InviteChip = ({ code }) => (
-  <span className="mt-4 text-xs rounded-full px-4 py-1.5 font-black tracking-widest"
+  <span className="mt-3 text-xs rounded-full px-4 py-1.5 font-black tracking-widest"
     style={{ background: "rgba(255,255,255,.1)", border: "1px solid rgba(255,215,0,.4)", color: "#FFD700" }}>
     JOIN MY LEAGUE · {code}
   </span>
@@ -82,38 +93,42 @@ const InviteChip = ({ code }) => (
 /* ---------- card bodies ---------- */
 
 function CardBody({ type, payload, user }) {
-  const name = user?.name || "Fan";
+  const name = (user?.name || "Fan").toUpperCase();
 
-  if (type === "prediction") {
+  if (type === "prediction" || type === "result") {
+    const isResult = type === "result";
     const { match, prediction, inviteCode } = payload;
-    const w = prediction.predicted_winner === "draw" ? "Draw" : prediction.predicted_winner === "home" ? match.home_team?.name : match.away_team?.name;
-    return (
-      <>
-        <Eyebrow>{name.toUpperCase()} PREDICTS</Eyebrow>
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <Flag team={match.home_team} big /><ScoreBig>{prediction.home_score} - {prediction.away_score}</ScoreBig><Flag team={match.away_team} big />
-        </div>
-        <span className="mt-5 text-white/80 text-sm">My winner: <b className="text-[#FFD700]">{w}</b></span>
-        <span className="block mt-3 font-display text-3xl tracking-wider">CAN YOU BEAT ME? 🔥</span>
-        {inviteCode && <InviteChip code={inviteCode} />}
-      </>
-    );
-  }
-
-  if (type === "result") {
-    const { match, prediction } = payload;
     const win = prediction.status === "exact" || prediction.status === "correct";
+    const winner = prediction.predicted_winner === "draw" ? "DRAW"
+      : (prediction.predicted_winner === "home" ? match.home_team?.name : match.away_team?.name)?.toUpperCase();
+    const score = isResult ? `${match.home_score} - ${match.away_score}` : `${prediction.home_score} - ${prediction.away_score}`;
     return (
       <>
-        <Eyebrow>{win ? "🎯 NAILED IT" : "FINAL WHISTLE"}</Eyebrow>
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <Flag team={match.home_team} big /><ScoreBig>{match.home_score} - {match.away_score}</ScoreBig><Flag team={match.away_team} big />
+        <Eyebrow>
+          {isResult ? <span className="text-[#FFD700]">FINAL WHISTLE</span>
+            : <><span className="text-[#FFD700]">{name}</span> <span className="text-white">PREDICTS</span></>}
+        </Eyebrow>
+        <div className="flex items-center justify-center gap-4 mt-5">
+          <GoldFlag team={match.home_team} />
+          <Score>{score}</Score>
+          <GoldFlag team={match.away_team} />
         </div>
-        <span className="mt-5 font-display text-2xl tracking-wide flex items-center gap-2 text-[#FFD700]">
-          <Trophy size={22} /> {prediction.status === "exact" ? "PERFECT PREDICTION" : win ? "CORRECT CALL" : "SO CLOSE!"}
-        </span>
-        <span className="mt-1 text-white/85 font-bold">{name}</span>
-        <GoldPill>{win ? `+${prediction.points_earned} POINTS` : "BETTER LUCK NEXT TIME"}</GoldPill>
+        {isResult ? (
+          <>
+            <span className="font-display tracking-wide mt-5" style={{ fontSize: 26, color: "#FFD700" }}>
+              {prediction.status === "exact" ? "PERFECT PREDICTION" : win ? "CORRECT CALL" : "SO CLOSE!"}
+            </span>
+            <GoldPill>{win ? `${name} · +${prediction.points_earned} POINTS` : `${name} · +0`}</GoldPill>
+          </>
+        ) : (
+          <>
+            <GoldPill>MY WINNER: <span className="text-[#FFD700]">{winner}</span></GoldPill>
+            <span className="font-display mt-4" style={{ fontSize: 44, lineHeight: 0.95, color: "#fff", letterSpacing: 1 }}>
+              CAN YOU BEAT ME? <span style={{ fontFamily: "system-ui" }}>🔥</span>
+            </span>
+            {inviteCode && <InviteChip code={inviteCode} />}
+          </>
+        )}
       </>
     );
   }
@@ -125,9 +140,9 @@ function CardBody({ type, payload, user }) {
     const popular = top === counts.home ? match.home_team?.name : top === counts.away ? match.away_team?.name : "Draw";
     return (
       <>
-        <Eyebrow>THE FANS HAVE SPOKEN</Eyebrow>
+        <Eyebrow><span className="text-[#FFD700]">THE FANS HAVE SPOKEN</span></Eyebrow>
         <div className="flex items-center justify-center gap-3 mt-4">
-          <Flag team={match.home_team} /><span className="font-display text-2xl text-white/40">VS</span><Flag team={match.away_team} />
+          <GoldFlag team={match.home_team} /><span className="font-display text-3xl text-white/50">VS</span><GoldFlag team={match.away_team} />
         </div>
         <div className="w-full space-y-3 mt-5">
           <Bar label={match.home_team?.name} count={counts.home} total={total} gold={popular === match.home_team?.name} />
@@ -143,10 +158,10 @@ function CardBody({ type, payload, user }) {
     const { league, winner } = payload;
     return (
       <>
-        <Eyebrow>{(league?.name || "MY LEAGUE").toUpperCase()}</Eyebrow>
-        <Crown size={46} className="text-[#FFD700] mt-5" style={{ filter: "drop-shadow(0 6px 20px rgba(255,215,0,.5))" }} />
+        <Eyebrow><span className="text-[#FFD700]">{(league?.name || "MY LEAGUE").toUpperCase()}</span></Eyebrow>
+        <Crown size={48} className="text-[#FFD700] mt-5" style={{ filter: "drop-shadow(0 6px 20px rgba(255,215,0,.5))" }} />
         <span className="mt-3 text-white/55 text-xs uppercase tracking-widest">League Leader</span>
-        <span className="font-display text-4xl tracking-wide gold-gradient-text">{winner?.name || "You"}</span>
+        <span className="font-display text-4xl tracking-wide" style={{ color: "#FFD700" }}>{(winner?.name || "You").toUpperCase()}</span>
         <GoldPill>{winner?.points ?? 0} POINTS</GoldPill>
         {league?.invite_code && <InviteChip code={league.invite_code} />}
       </>
@@ -158,17 +173,17 @@ function CardBody({ type, payload, user }) {
     const medals = ["🥇", "🥈", "🥉"];
     return (
       <>
-        <Eyebrow>{title || "TOP PREDICTORS"}</Eyebrow>
+        <Eyebrow><span className="text-[#FFD700]">{title || "TOP PREDICTORS"}</span></Eyebrow>
         <div className="w-full mt-5 space-y-2.5">
           {rows.slice(0, 3).map((r, i) => (
             <div key={r.user_id || i} className="flex items-center justify-between rounded-2xl px-4 py-3"
-              style={{ background: i === 0 ? "linear-gradient(90deg,rgba(255,215,0,.22),rgba(255,215,0,.04))" : "rgba(0,0,0,.35)", border: `1px solid ${i === 0 ? "rgba(255,215,0,.5)" : "rgba(255,255,255,.1)"}` }}>
-              <span className="flex items-center gap-2.5 font-bold"><span style={{ fontSize: 22 }}>{medals[i]}</span> {r.name}</span>
-              <span className="font-display text-3xl gold-text leading-none">{r.points}</span>
+              style={{ background: i === 0 ? "linear-gradient(90deg,rgba(255,215,0,.22),rgba(255,215,0,.04))" : "rgba(0,0,0,.4)", border: `1px solid ${i === 0 ? "rgba(255,215,0,.5)" : "rgba(255,255,255,.1)"}` }}>
+              <span className="flex items-center gap-2.5 font-bold"><span style={{ fontSize: 22, fontFamily: "system-ui" }}>{medals[i]}</span> {r.name}</span>
+              <span className="font-display text-3xl text-[#FFD700] leading-none">{r.points}</span>
             </div>
           ))}
         </div>
-        <span className="block mt-4 font-display text-2xl tracking-wider">CAN YOU BEAT THEM? ⚽</span>
+        <span className="font-display mt-4" style={{ fontSize: 30, color: "#fff" }}>CAN YOU BEAT THEM?</span>
       </>
     );
   }
@@ -178,13 +193,13 @@ function CardBody({ type, payload, user }) {
     const s = stats || user;
     return (
       <>
-        <Eyebrow>MY WORLD CUP RUN</Eyebrow>
+        <Eyebrow><span className="text-[#FFD700]">MY WORLD CUP RUN</span></Eyebrow>
         <div className="flex items-center gap-3 mt-5">
-          <img src={user?.picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=1a1f2e&textColor=FFD700`}
+          <img src={user?.picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user?.name || "fan")}&backgroundColor=1a1f2e&textColor=FFD700`}
             crossOrigin="anonymous" referrerPolicy="no-referrer" alt=""
             className="w-16 h-16 rounded-2xl object-cover" style={{ border: "2px solid #FFD700" }} />
           <div className="text-left">
-            <p className="font-display text-3xl tracking-wide leading-none">{name}</p>
+            <p className="font-display text-3xl tracking-wide leading-none">{user?.name}</p>
             <p className="text-white/50 text-xs mt-1">@{user?.username} · Level {s?.level}</p>
           </div>
         </div>
@@ -276,26 +291,28 @@ export default function ShareHub({ open, onClose, type, payload }) {
         </div>
 
         {/* the card */}
-        <div className="mx-auto mt-3" style={{ width: format === "story" ? 260 : 320 }}>
-          <div ref={cardRef} className="relative overflow-hidden rounded-3xl" data-testid="share-card"
-            style={{ aspectRatio: format === "story" ? "9 / 16" : "4 / 5", border: "1px solid rgba(255,215,0,.3)" }}>
-            {/* layered background */}
-            <img src={STADIUM_BG} crossOrigin="anonymous" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.16 }} />
-            <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 18% 0%, rgba(255,215,0,.28), transparent 45%), radial-gradient(circle at 100% 100%, rgba(16,185,129,.22), transparent 45%), linear-gradient(165deg,#0c0f17,#05060a)" }} />
+        <div className="mx-auto mt-3" style={{ width: format === "story" ? 270 : 330 }}>
+          <div ref={cardRef} className="relative overflow-hidden rounded-2xl" data-testid="share-card"
+            style={{ aspectRatio: format === "story" ? "9 / 16" : "4 / 5", border: "1px solid rgba(255,215,0,.35)", background: "#05060a" }}>
+            {/* stadium bg + golden light */}
+            <img src={STADIUM_BG} crossOrigin="anonymous" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.4 }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 50% 22%, rgba(255,190,60,0.30), transparent 55%), radial-gradient(circle at 86% 68%, rgba(255,200,80,0.28), transparent 42%), linear-gradient(180deg, rgba(5,6,10,0.45), rgba(5,6,10,0.82))" }} />
+            <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 50% 50%, transparent 38%, rgba(0,0,0,0.8) 100%)" }} />
             <Confetti />
-            {/* brand row */}
-            <div className="absolute top-4 inset-x-0 flex items-center justify-center gap-2 z-10">
-              <WCLogo variant="mark" className="h-7 w-auto" />
-              <span className="font-display tracking-wide text-lg">PREDICT<span className="gold-text">90</span></span>
+            {/* corner accents */}
+            <span className="absolute" style={{ left: "5%", top: "26%", fontSize: 40, fontFamily: "system-ui", filter: "drop-shadow(0 4px 10px rgba(0,0,0,.6))" }}>⚽</span>
+            <span className="absolute" style={{ right: "4%", top: "20%", fontSize: 60, fontFamily: "system-ui", filter: "drop-shadow(0 6px 16px rgba(255,200,60,.4))" }}>🏆</span>
+
+            {/* brand */}
+            <div className="absolute top-4 inset-x-0 text-center z-10">
+              <p className="font-display tracking-wide leading-none" style={{ fontSize: 30 }}>PREDICT<span className="text-[#FFD700]">90</span></p>
+              <p className="tracking-[0.3em] text-white/70" style={{ fontSize: 9, fontWeight: 700 }}>FIFA WORLD CUP 2026™</p>
             </div>
+
             {/* body */}
-            <div className="relative h-full w-full flex flex-col items-center justify-center text-center px-6 pt-10 pb-9">
+            <div className="relative h-full w-full flex flex-col items-center justify-center text-center px-6 pt-12 pb-8">
               <CardBody type={type} payload={payload} user={user} />
             </div>
-            {/* footer */}
-            <span className="absolute bottom-3.5 inset-x-0 text-center font-display tracking-widest text-white/45" style={{ fontSize: 11 }}>
-              FIFA WORLD CUP 26™ · PREDICT &amp; WIN
-            </span>
           </div>
         </div>
 
