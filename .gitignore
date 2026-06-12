@@ -87,3 +87,6 @@ android-sdk/frontend/node_modules/.cache/default-development/0.pack
 credentials.json
 *.key
 .credentials
+
+# Claude Code local state
+.claude/
