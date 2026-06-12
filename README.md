@@ -37,30 +37,30 @@ battle friends in private leagues, share viral cards — and win a **PS5**.
 
 ```
 predict90/
-├── api/index.py        # Vercel serverless entry → imports the FastAPI app
-├── backend/
-│   ├── server.py       # FastAPI app (auth, predictions, bracket, leagues, admin)
-│   └── wc2026_data.py  # real WC2026 groups + player pools
+├── api/
+│   ├── index.py        # FastAPI app — auth, predictions, bracket, leagues, admin
+│   ├── wc2026_data.py  # real WC2026 groups + player pools
+│   └── requirements.txt
 ├── frontend/           # React app (pages, components, share cards)
-├── vercel.json         # static build + /api routing
-└── requirements.txt    # Python deps for Vercel
+├── vercel.json         # static frontend build + /api serverless routing
+└── requirements.txt    # Python deps (local dev)
 ```
 
 ## 🚀 Run locally
 
 ```bash
-# 1) backend (also serves the built frontend at http://localhost:8000)
-cd backend
-pip install -r requirements.txt
-python -m uvicorn server:app --host 0.0.0.0 --port 8000
-
-# 2) frontend (build once so the backend can serve it)
+# 1) frontend — build once so the API can serve it
 cd frontend
 npm install --legacy-peer-deps
 npm run build
+cd ..
+
+# 2) backend API (also serves the built frontend at http://localhost:8000)
+pip install -r requirements.txt
+python -m uvicorn api.index:app --host 0.0.0.0 --port 8000
 ```
 
-Create `backend/.env`:
+Create `api/.env`:
 
 ```env
 MONGO_URL=<your MongoDB Atlas connection string>
