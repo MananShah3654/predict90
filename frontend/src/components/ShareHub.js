@@ -28,12 +28,14 @@ const Confetti = () => (
 );
 
 const GoldFlag = ({ team }) => (
-  <div className="flex flex-col items-center" style={{ width: 110 }}>
+  <div className="flex flex-col items-center" style={{ width: 78, flexShrink: 0 }}>
     <img src={team?.flag_url} crossOrigin="anonymous" alt="" style={{
-      width: 92, height: 62, objectFit: "cover", borderRadius: 10,
-      border: "3px solid #FFD700", boxShadow: "0 0 22px rgba(255,215,0,0.45), 0 8px 18px rgba(0,0,0,0.5)",
+      width: 66, height: 44, objectFit: "cover", borderRadius: 9,
+      border: "3px solid #FFD700", boxShadow: "0 0 18px rgba(255,215,0,0.45), 0 6px 14px rgba(0,0,0,0.5)",
     }} />
-    <span className="font-display tracking-wide mt-2" style={{ fontSize: 18, color: "#fff", lineHeight: 1.05, textAlign: "center" }}>
+    <span className="font-display tracking-wide mt-2" style={{
+      fontSize: 13, color: "#fff", lineHeight: 1.05, textAlign: "center", whiteSpace: "nowrap",
+    }}>
       {team?.name?.toUpperCase()}
     </span>
   </div>
@@ -41,7 +43,7 @@ const GoldFlag = ({ team }) => (
 
 const Score = ({ children }) => (
   <span className="font-display" style={{
-    fontSize: 76, lineHeight: 0.9, color: "#fff", letterSpacing: 2,
+    fontSize: 58, lineHeight: 0.9, color: "#fff", letterSpacing: 1,
     textShadow: "0 4px 24px rgba(255,215,0,0.45)", whiteSpace: "nowrap",
   }}>{children}</span>
 );
@@ -108,7 +110,7 @@ function CardBody({ type, payload, user }) {
           {isResult ? <span className="text-[#FFD700]">FINAL WHISTLE</span>
             : <><span className="text-[#FFD700]">{name}</span> <span className="text-white">PREDICTS</span></>}
         </Eyebrow>
-        <div className="flex items-center justify-center gap-4 mt-5">
+        <div className="flex items-center justify-between w-full mt-5">
           <GoldFlag team={match.home_team} />
           <Score>{score}</Score>
           <GoldFlag team={match.away_team} />
@@ -123,9 +125,10 @@ function CardBody({ type, payload, user }) {
         ) : (
           <>
             <GoldPill>MY WINNER: <span className="text-[#FFD700]">{winner}</span></GoldPill>
-            <span className="font-display mt-4" style={{ fontSize: 44, lineHeight: 0.95, color: "#fff", letterSpacing: 1 }}>
-              CAN YOU BEAT ME? <span style={{ fontFamily: "system-ui" }}>🔥</span>
+            <span className="font-display mt-4" style={{ fontSize: 38, lineHeight: 0.95, color: "#fff", letterSpacing: 1 }}>
+              CAN YOU BEAT ME?
             </span>
+            <span style={{ fontFamily: "system-ui", fontSize: 30 }}>🔥</span>
             {inviteCode && <InviteChip code={inviteCode} />}
           </>
         )}
@@ -141,7 +144,7 @@ function CardBody({ type, payload, user }) {
     return (
       <>
         <Eyebrow><span className="text-[#FFD700]">THE FANS HAVE SPOKEN</span></Eyebrow>
-        <div className="flex items-center justify-center gap-3 mt-4">
+        <div className="flex items-center justify-between w-full mt-4">
           <GoldFlag team={match.home_team} /><span className="font-display text-3xl text-white/50">VS</span><GoldFlag team={match.away_team} />
         </div>
         <div className="w-full space-y-3 mt-5">
@@ -310,9 +313,15 @@ export default function ShareHub({ open, onClose, type, payload }) {
             </div>
 
             {/* body */}
-            <div className="relative h-full w-full flex flex-col items-center justify-center text-center px-6 pt-12 pb-8">
+            <div className="relative h-full w-full flex flex-col items-center justify-center text-center px-4 pt-12 pb-11">
               <CardBody type={type} payload={payload} user={user} />
             </div>
+
+            {/* footer URL */}
+            <span className="absolute bottom-3 inset-x-0 text-center tracking-[0.18em]"
+              style={{ fontSize: 12, fontWeight: 800, color: "#FFD700" }}>
+              www.prediction90.com
+            </span>
           </div>
         </div>
 
