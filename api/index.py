@@ -370,7 +370,7 @@ async def login(data: LoginInput, response: Response):
 
 @api_router.post("/auth/google")
 async def google_auth(data: GoogleAuthInput, response: Response):
-    client_id = os.environ.get("GOOGLE_CLIENT_ID")
+    client_id = os.environ.get("GOOGLE_CLIENT_ID") or "301503395573-h3pknvrt7egpa6orh14gsq7dm73o8j2g.apps.googleusercontent.com"
     if not client_id:
         raise HTTPException(status_code=503, detail="Google sign-in is not configured on this server")
     try:

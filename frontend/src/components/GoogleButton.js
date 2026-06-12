@@ -1,6 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 
-const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const CLIENT_ID =
+  process.env.REACT_APP_GOOGLE_CLIENT_ID ||
+  "301503395573-h3pknvrt7egpa6orh14gsq7dm73o8j2g.apps.googleusercontent.com";
 const SRC = "https://accounts.google.com/gsi/client";
 
 function loadGsi() {
