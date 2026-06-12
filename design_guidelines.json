@@ -1,0 +1,107 @@
+{
+  "theme": "Dark",
+  "archetype": "Archetype 2 (Performance Pro) & 5 (Luxury) Hybrid",
+  "domain": "Sports, Social Gaming, SaaS",
+  "typography": {
+    "headings": {
+      "family": "Bebas Neue, Anton, sans-serif",
+      "weights": ["400"],
+      "tracking": "tracking-tight",
+      "usage": "H1, H2, H3, Promotional Banners, Large Scores"
+    },
+    "body": {
+      "family": "Manrope, sans-serif",
+      "weights": ["400", "500", "600", "700"],
+      "tracking": "tracking-normal",
+      "usage": "Paragraphs, Usernames, Match Stats, Button Text"
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl font-normal uppercase tracking-tighter",
+      "h2": "text-3xl sm:text-4xl font-normal uppercase tracking-tight",
+      "h3": "text-2xl sm:text-3xl font-normal uppercase",
+      "body": "text-base font-medium",
+      "small": "text-sm font-semibold tracking-wide uppercase"
+    }
+  },
+  "colors": {
+    "background": {
+      "default": "#0A0B10",
+      "card": "#11141D",
+      "glass": "rgba(255, 255, 255, 0.03)"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A0AEC0",
+      "muted": "#718096"
+    },
+    "accents": {
+      "gold": "#FFD700",
+      "gold_muted": "#D4AF37",
+      "gold_glow": "rgba(255, 215, 0, 0.3)",
+      "success": "#38A169",
+      "danger": "#E53E3E"
+    },
+    "borders": {
+      "default": "rgba(255, 255, 255, 0.1)",
+      "gold": "rgba(212, 175, 55, 0.5)"
+    }
+  },
+  "layouts": {
+    "spacing": "Generous spacing. p-6 or p-8 inside cards. gap-6 or gap-8 between grid items.",
+    "grid": "Bento Grid style for dashboards. grid-cols-1 md:grid-cols-4. Mobile-first stacking.",
+    "containers": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "alignment": "Optical alignment for stats and scores. Center-aligned hero."
+  },
+  "components": {
+    "glassmorphism": {
+      "card": "backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-lg",
+      "header": "backdrop-blur-2xl bg-black/60 border-b border-white/10 sticky top-0 z-50",
+      "share_card": "backdrop-blur-xl bg-black/40 border border-gold/30 rounded-3xl overflow-hidden relative shadow-[0_0_40px_rgba(255,215,0,0.15)]"
+    },
+    "buttons": {
+      "primary": "bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-bold uppercase tracking-wider py-4 px-8 rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,215,0,0.4)]",
+      "secondary": "bg-white/10 text-white font-semibold py-3 px-6 rounded-full hover:bg-white/20 transition-colors border border-white/10"
+    },
+    "badges": "rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest border border-white/20 bg-white/5 text-white"
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out",
+    "card_hover": "hover:-translate-y-1 hover:border-gold/50 hover:shadow-[0_10px_30px_rgba(255,215,0,0.1)]",
+    "page_load": "staggered fade-up animations for lists and grids"
+  },
+  "icons_library": "@phosphor-icons/react",
+  "accessibility": {
+    "contrast": "Ensure pure white text on deep navy/black backgrounds. Gold text should be bold for readability.",
+    "focus": "focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black",
+    "testing": "All interactive elements MUST have data-testid attributes."
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1518605368461-1e1e34cc9415?q=80&w=3112&auto=format&fit=crop",
+      "description": "Dark football stadium with bright floodlights, perfect for overlay."
+    },
+    "share_card_bg": {
+      "url": "https://images.unsplash.com/photo-1614632537197-38a470542116?q=80&w=3000&auto=format&fit=crop",
+      "description": "Close up of a soccer ball on dark grass under stadium lights."
+    },
+    "premium_pass_bg": {
+      "url": "https://images.unsplash.com/photo-1569517282132-25d22f4573e6?q=80&w=3000&auto=format&fit=crop",
+      "description": "Abstract dark metallic texture with gold highlights."
+    },
+    "avatar_placeholder": {
+      "url": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1000&auto=format&fit=crop",
+      "description": "Generic user avatar for leaderboards."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Install Bebas Neue and Manrope from Google Fonts via next/font or standard HTML link.",
+    "Install @phosphor-icons/react for premium sports icons.",
+    "Install framer-motion for smooth list staggering and share card trophy pop-ins.",
+    "Modify tailwind.config.js to include specific colors: base navy (#0A0B10), gold accents (#FFD700).",
+    "Build a mobile-first dashboard where cards have heavy padding (p-6) and distinct glass borders.",
+    "For the 'Share Card' component, use relative positioning with an absolute background image (share_card_bg) with a heavy black overlay (bg-black/60), glassmorphism content, and gold typography to make it highly viral.",
+    "Ensure 'data-testid' is on all prediction buttons, auth forms, and navigation links.",
+    "Do NOT use standard Shadcn cards for the main feed; build custom glassmorphism HTML structure using the components guide above.",
+    "Use Lucide-react if Phosphor fails, but use sharp/bold variants."
+  ]
+}
