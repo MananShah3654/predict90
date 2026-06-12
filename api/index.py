@@ -376,10 +376,12 @@ async def google_auth(data: GoogleAuthInput, response: Response):
     try:
         from google.oauth2 import id_token as google_id_token
         from google.auth.transport import requests as google_requests
-        info = google_id_token.verify_oauth2_token(data.credential, google_requests.Request(), client_id)
+        info = google_id_token.verify_oauth2_token(
+            data.credential, google_requests.Request(), client_id, clock_skew_in_seconds=10
+        )
     except Exception as e:
-        logger.error(f"Google token verification failed: {e}")
-        raise HTTPException(status_code=401, detail="Could not verify Google sign-in")
+        logger.error(f"Google token verification failed: {type(e).__name__}: {e}")
+        raise HTTPException(status_code=401, detail=f"Google verify failed: {type(e).__name__}: {e}")
 
     email = (info.get("email") or "").lower()
     if not email or not info.get("email_verified", True):
